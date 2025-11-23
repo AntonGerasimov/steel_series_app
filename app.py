@@ -46,14 +46,14 @@ def bind_screen_event():
         "icon_id": 4,
         "handlers": [
             {
-                "device-type": "screened-128x40",  # Apex 7 / GameDAC
+                "device-type": "screened",
                 "zone": "one",
                 "mode": "screen",
                 "datas": [
                     {
                         "lines": [
-                            {"has-text": True, "context-frame-key": "line1"},
-                            {"has-text": True, "context-frame-key": "line2"},
+                            {"has-text": True, "context-frame-key": "line_1"},
+                            {"has-text": True, "context-frame-key": "line_2"},
                         ]
                     }
                 ],
@@ -71,14 +71,14 @@ def send_screen_text(line1: str, line2: str):
     payload = {
         "game": GAME_NAME,
         "event": EVENT_NAME,
-        "device-type": "screened-128x40",
+        "device-type": "screened",
         "zone": "one",
         "mode": "screen",
         "data": {
             "value": counter,          # can be anything, just has to change sometimes
             "frame": {
-                "line1": line1,
-                "line2": line2,
+                "line_1": line1,
+                "line_2": line2,
             },
         },
     }
@@ -92,6 +92,13 @@ def heartbeat():
 
 if __name__ == "__main__":
     register_game()
+
+    requests.post(f"{base_url}/register_game_event", json={
+        "game": GAME_NAME,
+        "event": EVENT_NAME,
+        "value_optional": True
+    })
+
     bind_screen_event()
     send_screen_text("Hello, Denis", "from Python :)")
     # optionally keep app "alive":
