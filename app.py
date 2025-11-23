@@ -1,5 +1,6 @@
 import json
 import requests
+import time
 from pathlib import Path
 
 # ---- CONFIG ----
@@ -32,8 +33,8 @@ def register_game():
     payload = {
         "game": GAME_NAME,
         "game_display_name": GAME_NAME,
-        "developer": "Me",
-        "deinitialize_timer_length_ms": 60000,
+        "developer": "AntonGerasimov&DenisShokhin",
+        "deinitialize_timer_length_ms": 0,
     }
     r = requests.post(URL_GAME_METADATA, json=payload, headers=headers)
     print("register_game:", r.text)
@@ -75,7 +76,7 @@ def send_screen_text(line1: str, line2: str):
         "zone": "one",
         "mode": "screen",
         "data": {
-            "value": counter,          # can be anything, just has to change sometimes
+            "value": counter,
             "frame": {
                 "line_1": line1,
                 "line_2": line2,
@@ -100,6 +101,12 @@ if __name__ == "__main__":
     })
 
     bind_screen_event()
-    send_screen_text("Hello, Denis", "from Python :)")
-    # optionally keep app "alive":
-    heartbeat()
+
+    while True:
+        send_screen_text("Denis", "Shokhin")
+        heartbeat()
+        time.sleep(5)
+
+        send_screen_text("Anton", "Gerasimov")
+        heartbeat()
+        time.sleep(5)
